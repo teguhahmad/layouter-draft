@@ -19,6 +19,7 @@ const defaultSettings: EbookSettings = {
   author: '',
   description: '',
   coverImage: null,
+  backCoverImage: null,
   paperSize: 'A4',
   margins: {
     top: 2.54,

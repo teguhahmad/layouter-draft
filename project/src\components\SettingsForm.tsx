@@ -11,7 +11,7 @@ const pageNumberAlignments = ['left', 'center', 'right'];
 export function SettingsForm() {
   const { settings, updateSettings } = useEbookStore();
 
-  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'front' | 'back') => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
@@ -20,7 +20,11 @@ export function SettingsForm() {
       }
       const reader = new FileReader();
       reader.onload = (e) => {
-        updateSettings({ coverImage: e.target?.result as string });
+        if (type === 'front') {
+          updateSettings({ coverImage: e.target?.result as string });
+        } else {
+          updateSettings({ backCoverImage: e.target?.result as string });
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -59,11 +63,20 @@ export function SettingsForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Cover Image</label>
+            <label className="block text-sm font-medium text-gray-700">Front Cover Image</label>
             <input
               type="file"
               accept="image/*"
-              onChange={handleCoverImageChange}
+              onChange={(e) => handleCoverImageChange(e, 'front')}
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Back Cover Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleCoverImageChange(e, 'back')}
               className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             />
           </div>
