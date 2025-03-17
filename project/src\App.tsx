@@ -8,7 +8,7 @@ function App() {
   const [activeTab, setActiveTab] = React.useState<'settings' | 'chapters'>('settings');
 
   return (
-    <Layout>
+    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
       <div className="flex flex-col h-full">
         {activeTab === 'settings' ? (
           <SettingsForm />

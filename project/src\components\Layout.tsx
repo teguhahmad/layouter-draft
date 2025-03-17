@@ -4,11 +4,11 @@ import { cn } from '../utils/cn';
 
 interface LayoutProps {
   children: React.ReactNode;
+  activeTab?: 'settings' | 'chapters';
+  onTabChange?: (tab: 'settings' | 'chapters') => void;
 }
 
-export function Layout({ children }: LayoutProps) {
-  const [activeTab, setActiveTab] = React.useState<'settings' | 'chapters'>('settings');
-
+export function Layout({ children, activeTab = 'settings', onTabChange }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200">
@@ -28,7 +28,7 @@ export function Layout({ children }: LayoutProps) {
           <aside className="w-96">
             <nav className="flex space-x-4 mb-6">
               <button
-                onClick={() => setActiveTab('settings')}
+                onClick={() => onTabChange?.('settings')}
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2',
                   activeTab === 'settings'
@@ -40,7 +40,7 @@ export function Layout({ children }: LayoutProps) {
                 Settings
               </button>
               <button
-                onClick={() => setActiveTab('chapters')}
+                onClick={() => onTabChange?.('chapters')}
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2',
                   activeTab === 'chapters'
