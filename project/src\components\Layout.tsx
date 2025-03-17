@@ -1,6 +1,7 @@
 import React from 'react';
-import { Settings, BookOpen } from 'lucide-react';
+import { Settings, BookOpen, FileDown } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { Preview } from './Preview';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,7 +27,7 @@ export function Layout({ children, activeTab, onTabChange }: LayoutProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           <aside className="w-96">
-            <nav className="flex space-x-4 mb-6">
+            <nav className="flex items-center space-x-2 mb-6">
               <button
                 onClick={() => onTabChange('settings')}
                 className={cn(
@@ -51,20 +52,21 @@ export function Layout({ children, activeTab, onTabChange }: LayoutProps) {
                 <BookOpen size={16} />
                 Chapters
               </button>
+              <button
+                onClick={() => document.getElementById('generate-pdf-btn')?.click()}
+                className="ml-2 p-2 text-gray-600 hover:bg-gray-100 rounded-md"
+                title="Generate PDF"
+              >
+                <FileDown size={16} />
+              </button>
             </nav>
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               {children}
             </div>
           </aside>
 
-          <main className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="aspect-[1/1.4142] bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <iframe
-                src="about:blank"
-                className="w-full h-full"
-                title="PDF Preview"
-              />
-            </div>
+          <main className="flex-1">
+            <Preview />
           </main>
         </div>
       </div>
