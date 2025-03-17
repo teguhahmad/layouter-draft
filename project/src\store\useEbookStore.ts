@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import type { Chapter, EbookSettings } from '../types';
-import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 interface EbookStore {
   chapters: Chapter[];

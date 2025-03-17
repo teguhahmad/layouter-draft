@@ -173,9 +173,17 @@ const EbookDocument = () => {
         {chapter.images.map((image) => (
           <View key={image.id}>
             <View style={{ alignItems: image.alignment }}>
-              <Image src={image.url} style={styles.image} />
+              <Image src={image.url} style={[styles.image, { width: `${image.width}%` }]} />
             </View>
             <Text style={styles.caption}>{image.caption}</Text>
+          </View>
+        ))}
+        {chapter.subChapters.map((subChapter) => (
+          <View key={subChapter.id}>
+            <Text style={[styles.chapterTitle, { fontSize: 16, marginTop: 20 }]}>
+              {subChapter.title}
+            </Text>
+            <Text style={styles.content}>{subChapter.content}</Text>
           </View>
         ))}
         {settings.pageNumbering.enabled && (
@@ -209,6 +217,7 @@ export function Preview() {
   const { settings } = useEbookStore();
   const [pdfUrl, setPdfUrl] = React.useState<string | null>(null);
   const [isGenerating, setIsGenerating] = React.useState(false);
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
 
   const generatePdf = async () => {
     try {
@@ -216,6 +225,11 @@ export function Preview() {
       const blob = await pdf(<EbookDocument />).toBlob();
       const url = URL.createObjectURL(blob);
       setPdfUrl(url);
+      
+      // Update iframe source
+      if (iframeRef.current) {
+        iframeRef.current.src = url;
+      }
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
@@ -257,8 +271,12 @@ export function Preview() {
         )}
       </div>
 
-      <div className="flex-1 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-        <p className="text-gray-500">Click "Generate PDF" to create your document</p>
+      <div className="flex-1">
+        <iframe
+          ref={iframeRef}
+          className="w-full h-full border-0"
+          title="PDF Preview"
+        />
       </div>
     </div>
   );
